@@ -48,7 +48,7 @@ if (isset ($_SERVER['HTTP_REFERER'])) {
       $phone = str_replace(' ', '', $phone);
       if (strlen($phone) !== 8){
         $errors['phone_lenght'] = ValidationFunctions::ERROR_PHONE_MUST_CONTAIN_8NUMBERS;
-      } 
+      }
       }
     }
   }
