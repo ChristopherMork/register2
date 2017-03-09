@@ -9,6 +9,13 @@ require_once('ValidationFunctions.php');
 // Create object from ValidationFunctions Class
 $validation_functions = new ValidationFunctions();
 $errors = [];
+$allowed_pets = [
+  'Dog',
+  'Cat',
+  'Rat',
+  'Bird'
+];
+
 //print_r($_POST);
 
 /**
@@ -35,27 +42,50 @@ if (isset ($_SERVER['HTTP_REFERER'])) {
     // Checker at email passer
     if (isset($_POST["email"]) && !empty($_POST["email"])) {
       $email = trim($_POST["email"]);
-      if(filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE){
+      if (filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) {
         $errors['email'] = ValidationFunctions::ERROR_EMAIL_FORMAT;
       }
     }
     // Checker at telefonnummer kun indeholder tal
-    if (isset($_POST["phone"]) && !empty($_POST["phone"])){
-      if(!ctype_digit($_POST ['phone'])){
+    if (isset($_POST["phone"]) && !empty($_POST["phone"])) {
+      if (!ctype_digit($_POST ['phone'])) {
         $errors['phone'] = ValidationFunctions::ERROR_PHONE_MUST_CONTAIN_NUMBERS;
       } else {
-      $phone = $_POST['phone'];
-      $phone = str_replace(' ', '', $phone);
-      if (strlen($phone) !== 8){
-        $errors['phone_lenght'] = ValidationFunctions::ERROR_PHONE_MUST_CONTAIN_8NUMBERS;
+        $phone = $_POST['phone'];
+        $phone = str_replace(' ', '', $phone);
+        if (strlen($phone) !== 8) {
+          $errors['phone_lenght'] = ValidationFunctions::ERROR_PHONE_MUST_CONTAIN_8NUMBERS;
+        }
       }
+    }
+    // Checker at du ikke er en hacker!
+    if (isset($_POST["pet"]) && !empty($_POST["pet"])) {
+      $pet = $_POST ['pet'];
+
+      /*
+      $result = FALSE;
+      foreach($allowed_pets as $allowed_pet) {
+        if($pet == $allowed_pet){
+          $result = TRUE;
+          break;
+        }
       }
+      */
+      // Bogstaver i pets til lower case
+      $allowed_pets = array_map ("strtolower" , $allowed_pets);
+      if (!in_array(strtolower($pet), $allowed_pets))  {
+        $errors['wrong_pet'] = ValidationFunctions::DU_ER_EN_HACKER;
+      }
+    } else {
+      $errors['pets'] = ValidationFunctions::DU_ER_EN_HACKER;
     }
   }
 
+
+
+
 }
 
-$error_count = count ($errors);
-echo "der er $error_count fejl";
+print_r ($errors);
 
 

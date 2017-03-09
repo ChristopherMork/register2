@@ -15,6 +15,7 @@ class ValidationFunctions
   const ERROR_EMAIL_FORMAT = "Email format forkert!";
   const ERROR_PHONE_MUST_CONTAIN_NUMBERS = "Telefon må kun indeholde tal";
   const ERROR_PHONE_MUST_CONTAIN_8NUMBERS = "Telefon skal indeholde 8 tal";
+  const DU_ER_EN_HACKER = "Du er en hacker!";
 
   public function validateStringLenght($name, $lenght = 2)
   {
