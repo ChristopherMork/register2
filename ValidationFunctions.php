@@ -16,6 +16,8 @@ class ValidationFunctions
   const ERROR_PHONE_MUST_CONTAIN_NUMBERS = "Telefon må kun indeholde tal";
   const ERROR_PHONE_MUST_CONTAIN_8NUMBERS = "Telefon skal indeholde 8 tal";
   const DU_ER_EN_HACKER = "Du er en hacker!";
+  const PASSWORDS_MATCHER_IKKE = "Dine passwords matcher ikke!";
+  const PASSWORD_IKKE_LANGT_NOK = "Password ikke langt nok";
 
   public function validateStringLenght($name, $lenght = 2)
   {

@@ -38,7 +38,7 @@ if (isset ($_SERVER['HTTP_REFERER'])) {
         $errors ['name_format'] = ValidationFunctions::ERROR_NAME_FORMAT;
       }
     } else {
-      $errors['email'] = ValidationFunctions::ERROR_FIELD_REQUIRED;
+      $errors['name'] = ValidationFunctions::ERROR_FIELD_REQUIRED;
     }
     // Checker at email passer
     if (isset($_POST["email"]) && !empty($_POST["email"])) {
@@ -65,17 +65,6 @@ if (isset ($_SERVER['HTTP_REFERER'])) {
     if (isset($_POST["pet"]) && !empty($_POST["pet"])) {
       $pet = $_POST ['pet'];
 
-      /*
-      $result = FALSE;
-      foreach($allowed_pets as $allowed_pet) {
-        if($pet == $allowed_pet){
-          $result = TRUE;
-          break;
-        }
-      }
-      */
-
-      // Bogstaver i pets til lower case
       $allowed_pets = array_map ("strtolower" , $allowed_pets);
       if (!in_array(strtolower($pet), $allowed_pets))  {
         $errors['wrong_pet'] = ValidationFunctions::DU_ER_EN_HACKER;
@@ -83,15 +72,37 @@ if (isset ($_SERVER['HTTP_REFERER'])) {
     } else {
       $errors['pets'] = ValidationFunctions::DU_ER_EN_HACKER;
     }
+    // Validerer description
 
     if (isset($_POST["description"]) && !empty($_POST["description"]))
       //Trim fjerner whitespace og udelukker HTML-tags
       {
       $description = trim (strip_tags( $_POST['description'], '<h1><h2><h3><h4><a>'));
     }
+
+    // Checker at passwords matcher
+    // Checker at passwords minimum er 6 tegn lang
+    if (isset ($_POST["password"], $_POST["password_again"])
+      && !empty($_POST["password"]) && !empty ($_POST ["password_again"])){
+
+      if ($_POST["password"] !== $_POST["password_again"]){
+        $errors["passwords"] = ValidationFunctions::PASSWORDS_MATCHER_IKKE;
+      } elseif(strlen($_POST["password"] ) < 6){
+        $errors["password"] = ValidationFunctions::PASSWORD_IKKE_LANGT_NOK;
+      }
+    } else {
+      ValidationFunctions::ERROR_FIELD_REQUIRED;
+    }
+
+
+
   } //End of isset $_POST
 } //End of HTTP_REFERER
 
-print_r ($errors);
+if (!empty ($errors)){
 
+  foreach($errors as $key => $error) {
+    echo "<strong>" . strtoupper($key) . ": " . $error . "</strong> <br />";
+  }
+}
 
