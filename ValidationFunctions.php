@@ -8,9 +8,14 @@
 
 class ValidationFunctions
 {
+  const ERROR_FIELD_REQUIRED = "Is required";
+
   const ERROR_NAME_LENGHT = "Navn er for kort";
   const ERROR_NAME_FORMAT ="Navn må kun bestå af bogstaver";
   const ERROR_EMAIL_FORMAT = "Email format forkert!";
+  const ERROR_PHONE_MUST_CONTAIN_NUMBERS = "Telefon må kun indeholde tal";
+  const ERROR_PHONE_MUST_CONTAIN_8NUMBERS = "Telefon skal indeholde 8 tal";
+
   public function validateStringLenght($name, $lenght = 2)
   {
     if (is_string($name) && is_integer($lenght)) {
