@@ -25,6 +25,7 @@ $allowed_pets = [
 if (isset ($_SERVER['HTTP_REFERER'])) {
   if ($_SERVER['HTTP_REFERER'] == "http://localhost/register2/register.php" && isset ($_POST) && !empty($_POST)) {
     //Check først at key'en (indexet) name er sat i SUPERGLOBAL $_POST
+
     //Check derefter at den ikke indeholder en tom String
     if (isset($_POST["name"]) && !empty($_POST["name"])) {
       $name = trim($_POST["name"]);
@@ -46,6 +47,7 @@ if (isset ($_SERVER['HTTP_REFERER'])) {
         $errors['email'] = ValidationFunctions::ERROR_EMAIL_FORMAT;
       }
     }
+
     // Checker at telefonnummer kun indeholder tal
     if (isset($_POST["phone"]) && !empty($_POST["phone"])) {
       if (!ctype_digit($_POST ['phone'])) {
@@ -58,6 +60,7 @@ if (isset ($_SERVER['HTTP_REFERER'])) {
         }
       }
     }
+
     // Checker at du ikke er en hacker!
     if (isset($_POST["pet"]) && !empty($_POST["pet"])) {
       $pet = $_POST ['pet'];
@@ -71,6 +74,7 @@ if (isset ($_SERVER['HTTP_REFERER'])) {
         }
       }
       */
+
       // Bogstaver i pets til lower case
       $allowed_pets = array_map ("strtolower" , $allowed_pets);
       if (!in_array(strtolower($pet), $allowed_pets))  {
@@ -79,12 +83,14 @@ if (isset ($_SERVER['HTTP_REFERER'])) {
     } else {
       $errors['pets'] = ValidationFunctions::DU_ER_EN_HACKER;
     }
-  }
 
-
-
-
-}
+    if (isset($_POST["description"]) && !empty($_POST["description"]))
+      //Trim fjerner whitespace og udelukker HTML-tags
+      {
+      $description = trim (strip_tags( $_POST['description'], '<h1><h2><h3><h4><a>'));
+    }
+  } //End of isset $_POST
+} //End of HTTP_REFERER
 
 print_r ($errors);
 

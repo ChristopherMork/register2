@@ -29,7 +29,7 @@ class ValidationFunctions
 
   public function validateStringIsAlpha($string)
   {
-    if (is_string($string) && preg_match('/^[A-Za-z\s]+$/', $string)) {
+    if (is_string($string) && preg_match('/^[A-Za-zæøåÆØÅ\s]+$/', $string)) {
       return true;
     } else
       return false;
