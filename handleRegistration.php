@@ -4,6 +4,7 @@
  * User: christophermork
  * Date: 08/03/2017
  */
+
 require_once('ValidationFunctions.php');
 
 // Create object from ValidationFunctions Class
@@ -15,8 +16,6 @@ $allowed_pets = [
   'Rat',
   'Bird'
 ];
-
-//print_r($_POST);
 
 /**
  * Checker at brugeren er videresendt fra register.php
@@ -46,7 +45,10 @@ if (isset ($_SERVER['HTTP_REFERER'])) {
       if (filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) {
         $errors['email'] = ValidationFunctions::ERROR_EMAIL_FORMAT;
       }
+    } else {
+      $errors['email'] = ValidationFunctions::ERROR_FIELD_REQUIRED;
     }
+
 
     // Checker at telefonnummer kun indeholder tal
     if (isset($_POST["phone"]) && !empty($_POST["phone"])) {
@@ -59,6 +61,8 @@ if (isset ($_SERVER['HTTP_REFERER'])) {
           $errors['phone_lenght'] = ValidationFunctions::ERROR_PHONE_MUST_CONTAIN_8NUMBERS;
         }
       }
+    } else {
+      $errors['phone'] = ValidationFunctions::ERROR_FIELD_REQUIRED;
     }
 
     // Checker at du ikke er en hacker!
@@ -78,6 +82,8 @@ if (isset ($_SERVER['HTTP_REFERER'])) {
       //Trim fjerner whitespace og udelukker HTML-tags
       {
       $description = trim (strip_tags( $_POST['description'], '<h1><h2><h3><h4><a>'));
+    } else {
+        $errors['description'] = ValidationFunctions::ERROR_FIELD_REQUIRED;
     }
 
     // Checker at passwords matcher
@@ -91,10 +97,9 @@ if (isset ($_SERVER['HTTP_REFERER'])) {
         $errors["password"] = ValidationFunctions::PASSWORD_IKKE_LANGT_NOK;
       }
     } else {
-      ValidationFunctions::ERROR_FIELD_REQUIRED;
+      $errors['password'] = ValidationFunctions::ERROR_FIELD_REQUIRED;
+      $errors['password_again'] = ValidationFunctions::ERROR_FIELD_REQUIRED;
     }
-
-
 
   } //End of isset $_POST
 } //End of HTTP_REFERER
@@ -102,7 +107,7 @@ if (isset ($_SERVER['HTTP_REFERER'])) {
 if (!empty ($errors)){
 
   foreach($errors as $key => $error) {
-    echo "<strong>" . strtoupper($key) . ": " . $error . "</strong> <br />";
+    echo "<strong>" . str_replace('_' , ' ' , strtoupper($key)) . ": " . $error . "</strong> <br />";
   }
 }
 
